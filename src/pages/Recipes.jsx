@@ -9,7 +9,9 @@ function Recipes(props) {
 
     props.currentItems.map((item) => {
 
-      fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?i=${item}`)
+      fetch(
+        `https://www.themealdb.com/api/json/v1/1/filter.php?i=${encodeURIComponent(item)}`
+      )
         .then((response) => {
           return response.json();
         })
@@ -52,7 +54,9 @@ function Recipes(props) {
 
   function getRecipeDetails(id) {
 
-    fetch(`/api/api/json/v1/1/lookup.php?i=${id}`)
+    fetch(
+      `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`
+    )
       .then((response) => {
         return response.json();
       })
@@ -64,12 +68,12 @@ function Recipes(props) {
 
         for (let i = 1; i <= 20; i++) {
 
-  const ingredient = recipeDetails[`strIngredient${i}`];
+          const ingredient = recipeDetails[`strIngredient${i}`];
 
-  if (ingredient && ingredient.trim() !== "") {
-    recipeIngredients.push(ingredient);
-  }
-}
+          if (ingredient && ingredient.trim() !== "") {
+            recipeIngredients.push(ingredient);
+          }
+        }
 
         const matchedIngredients = recipeIngredients.filter((item) => {
 
@@ -125,16 +129,17 @@ function Recipes(props) {
 
   useEffect(() => {
 
-    // Only fetch recipes if we don't already have them
     if (props.recipes.length === 0) {
       findRecipes();
     }
 
   }, []);
 
-  const sortedRecipes = [...props.recipes].sort(function (a, b) {
-    return b.matchPercentage - a.matchPercentage;
-  }).slice(0,42);
+  const sortedRecipes = [...props.recipes]
+    .sort(function (a, b) {
+      return b.matchPercentage - a.matchPercentage;
+    })
+    .slice(0, 42);
 
   return (
     <div className="recipes-page">
