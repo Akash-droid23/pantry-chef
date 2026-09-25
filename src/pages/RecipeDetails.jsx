@@ -9,23 +9,29 @@ function RecipeDetails(props) {
   const [recipe, setRecipe] = useState(null);
 
   useEffect(() => {
-    fetch(`/api/api/json/v1/1/lookup.php?i=${id}`)
+
+    const apiUrl = import.meta.env.DEV
+      ? `/api/api/json/v1/1/lookup.php?i=${id}`
+      : `/api/mealdb?type=lookup&i=${id}`;
+
+    fetch(apiUrl)
       .then((response) => {
         return response.json();
       })
       .then((data) => {
         setRecipe(data.meals[0]);
       });
+
   }, [id]);
 
   if (recipe === null) {
-  return (
-    <div className="loading-page">
-      <h2>👨‍🍳 Cooking your recipe...</h2>
-      <p>This may take a few seconds.</p>
-    </div>
-  );
-}
+    return (
+      <div className="loading-page">
+        <h2>👨‍🍳 Cooking your recipe...</h2>
+        <p>This may take a few seconds.</p>
+      </div>
+    );
+  }
 
   const missingIngredients = [];
 

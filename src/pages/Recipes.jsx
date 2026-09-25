@@ -9,9 +9,11 @@ function Recipes(props) {
 
     props.currentItems.map((item) => {
 
-      fetch(
-        `https://www.themealdb.com/api/json/v1/1/filter.php?i=${encodeURIComponent(item)}`
-      )
+      const apiUrl = import.meta.env.DEV
+        ? `/api/api/json/v1/1/filter.php?i=${encodeURIComponent(item)}`
+        : `/api/mealdb?type=filter&i=${encodeURIComponent(item)}`;
+
+      fetch(apiUrl)
         .then((response) => {
           return response.json();
         })
@@ -54,9 +56,11 @@ function Recipes(props) {
 
   function getRecipeDetails(id) {
 
-    fetch(
-      `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`
-    )
+    const apiUrl = import.meta.env.DEV
+      ? `/api/api/json/v1/1/lookup.php?i=${id}`
+      : `/api/mealdb?type=lookup&i=${id}`;
+
+    fetch(apiUrl)
       .then((response) => {
         return response.json();
       })
@@ -68,7 +72,8 @@ function Recipes(props) {
 
         for (let i = 1; i <= 20; i++) {
 
-          const ingredient = recipeDetails[`strIngredient${i}`];
+          const ingredient =
+            recipeDetails[`strIngredient${i}`];
 
           if (ingredient && ingredient.trim() !== "") {
             recipeIngredients.push(ingredient);
@@ -164,7 +169,10 @@ function Recipes(props) {
           {sortedRecipes.map((recipe) => {
 
             return (
-              <div className="recipe-card" key={recipe.idMeal}>
+              <div
+                className="recipe-card"
+                key={recipe.idMeal}
+              >
 
                 <img
                   className="recipe-image"
