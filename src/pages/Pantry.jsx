@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import IngredientComponent, {
   ingredientEmojis
-} from "./ingredientComponent";
+} from "./IngredientComponent";
 
 function Pantry(props) {
 
